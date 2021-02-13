@@ -47,7 +47,8 @@ abstract class _LoginStore with Store {
   }
 
   @computed
-  bool get isEmailValid => email.length >= 6;
+  bool get isEmailValid =>
+      RegExp("[A-Za-z0-9\\._-]+@[A-Za-z]+\\.[A-Za-z]+").hasMatch(email);
   @computed
   bool get isPasswordValid => password.length >= 6;
 
