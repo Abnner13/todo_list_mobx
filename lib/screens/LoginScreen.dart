@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:todo_mobx/screens/ListScreen.dart';
+import 'package:todo_mobx/stores/LoginStore.dart';
 import 'package:todo_mobx/widgets/CustomIconButton.dart';
 import 'package:todo_mobx/widgets/CustomTextField.dart';
 
 class LoginScreen extends StatelessWidget {
+  var loginStore = LoginStore();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,7 +28,7 @@ class LoginScreen extends StatelessWidget {
                     hint: 'E-mail',
                     prefix: Icon(Icons.account_circle),
                     textInputType: TextInputType.emailAddress,
-                    onChanged: (email) {},
+                    onChanged: loginStore.setEmail,
                     enabled: true,
                   ),
                   const SizedBox(height: 16),
@@ -33,7 +36,7 @@ class LoginScreen extends StatelessWidget {
                     hint: 'Senha',
                     prefix: Icon(Icons.lock),
                     obscure: true,
-                    onChanged: (senha) {},
+                    onChanged: loginStore.setPassword,
                     enabled: true,
                     suffix: CustomIconButton(
                       radius: 32,
