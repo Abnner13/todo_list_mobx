@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_mobx/stores/ListStore.dart';
+import 'package:todo_mobx/stores/LoginStore.dart';
 import 'package:todo_mobx/widgets/CustomIconButton.dart';
 import 'package:todo_mobx/widgets/CustomTextField.dart';
 
@@ -35,6 +37,8 @@ class ListScreen extends StatelessWidget {
                       icon: Icon(Icons.exit_to_app),
                       color: Colors.white,
                       onPressed: () {
+                        Provider.of<LoginStore>(context, listen: false)
+                            .logout();
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => LoginScreen()));
                       },

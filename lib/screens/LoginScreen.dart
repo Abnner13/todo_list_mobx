@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_mobx/screens/ListScreen.dart';
 import 'package:todo_mobx/stores/LoginStore.dart';
 import 'package:todo_mobx/widgets/CustomIconButton.dart';
@@ -12,12 +13,14 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  var loginStore = LoginStore();
+  LoginStore loginStore;
 
   ReactionDisposer disposer;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    loginStore = Provider.of<LoginStore>(context);
 
     disposer = autorun((_) {
       if (loginStore.loggedIn) {
