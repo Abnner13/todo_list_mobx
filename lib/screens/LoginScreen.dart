@@ -1,12 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:todo_mobx/screens/ListScreen.dart';
 import 'package:todo_mobx/stores/LoginStore.dart';
 import 'package:todo_mobx/widgets/CustomIconButton.dart';
 import 'package:todo_mobx/widgets/CustomTextField.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   var loginStore = LoginStore();
+
+  ReactionDisposer disposer;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    disposer = autorun((_) {
+      if (loginStore.loggedIn) {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => ListScreen()));
+      }
+    });
+
+    // disposer = reaction((_) => loginStore.loggedIn, (loggedIn) {
+    //   if (loginStore.loggedIn) {
+    //     Navigator.of(context)
+    //         .pushReplacement(MaterialPageRoute(builder: (_) => ListScreen()));
+    //   }
+    // });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,5 +112,11 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    disposer();
+    super.dispose();
   }
 }
