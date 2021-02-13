@@ -33,17 +33,23 @@ class LoginScreen extends StatelessWidget {
                     enabled: true,
                   ),
                   const SizedBox(height: 16),
-                  CustomTextField(
-                    hint: 'Senha',
-                    prefix: Icon(Icons.lock),
-                    obscure: true,
-                    onChanged: loginStore.setPassword,
-                    enabled: true,
-                    suffix: CustomIconButton(
-                      radius: 32,
-                      iconData: Icons.visibility,
-                      onTap: () {},
-                    ),
+                  Observer(
+                    builder: (_) {
+                      return CustomTextField(
+                        hint: 'Senha',
+                        prefix: Icon(Icons.lock),
+                        obscure: !loginStore.visiblePasswords,
+                        onChanged: loginStore.setPassword,
+                        enabled: true,
+                        suffix: CustomIconButton(
+                          radius: 32,
+                          iconData: loginStore.visiblePasswords
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          onTap: loginStore.setVisiblePasswords,
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 16),
                   Observer(
