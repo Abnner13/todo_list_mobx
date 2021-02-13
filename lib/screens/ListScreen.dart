@@ -7,7 +7,8 @@ import 'package:todo_mobx/widgets/CustomTextField.dart';
 import 'LoginScreen.dart';
 
 class ListScreen extends StatelessWidget {
-  var listStore = ListStore();
+  final listStore = ListStore();
+  final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -54,13 +55,17 @@ class ListScreen extends StatelessWidget {
                         Observer(
                           builder: (_) {
                             return CustomTextField(
+                              controller: controller,
                               hint: 'Tarefa',
                               onChanged: listStore.setNewTodoTitle,
                               suffix: listStore.isFormValid
                                   ? CustomIconButton(
                                       radius: 32,
                                       iconData: Icons.add,
-                                      onTap: listStore.addTodo,
+                                      onTap: () {
+                                        listStore.addTodo();
+                                        controller.clear();
+                                      },
                                     )
                                   : null,
                             );
@@ -75,11 +80,24 @@ class ListScreen extends StatelessWidget {
                               return ListView.separated(
                                 itemCount: listStore.todoList.length,
                                 itemBuilder: (_, index) {
-                                  return ListTile(
-                                    title: Text(
-                                      listStore.todoList[index],
-                                    ),
-                                    onTap: () {},
+                                  final todoList = listStore.todoList[index];
+                                  return Observer(
+                                    builder: (_) {
+                                      return ListTile(
+                                        title: Text(
+                                          todoList.title,
+                                          style: TextStyle(
+                                            decoration: todoList.done
+                                                ? TextDecoration.lineThrough
+                                                : null,
+                                            color: todoList.done
+                                                ? Colors.grey
+                                                : Colors.black,
+                                          ),
+                                        ),
+                                        onTap: todoList.toggleDone,
+                                      );
+                                    },
                                   );
                                 },
                                 separatorBuilder: (_, __) {
